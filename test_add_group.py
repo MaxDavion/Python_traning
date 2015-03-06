@@ -31,9 +31,9 @@ class test_add_group(unittest.TestCase):
         wd.find_element_by_link_text("groups").click()
 
     def create_group(self, wd, group):
-        # Init group greation
+        # Init group creation
         wd.find_element_by_name("new").click()
-        # Fill group create group
+        # Fill group create form
         wd.find_element_by_name("group_name").click()
         wd.find_element_by_name("group_name").clear()
         wd.find_element_by_name("group_name").send_keys(group.name)

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from selenium.webdriver.firefox.webdriver import WebDriver
+from selenium.webdriver.support.select import Select
 from contact import Contact
 import unittest
 
@@ -44,7 +45,6 @@ class test_add_contact(unittest.TestCase):
         wd.find_element_by_name("nickname").click()
         wd.find_element_by_name("nickname").clear()
         wd.find_element_by_name("nickname").send_keys(contact.nickname)
-        wd.find_element_by_name("photo").click()
         wd.find_element_by_name("title").click()
         wd.find_element_by_name("title").clear()
         wd.find_element_by_name("title").send_keys(contact.title)
@@ -75,20 +75,20 @@ class test_add_contact(unittest.TestCase):
         wd.find_element_by_name("homepage").click()
         wd.find_element_by_name("homepage").clear()
         wd.find_element_by_name("homepage").send_keys(contact.homepage)
-        if not wd.find_element_by_xpath("//div[@id='content']/form/select[1]//option[18]").is_selected():
-            wd.find_element_by_xpath("//div[@id='content']/form/select[1]//option[18]").click()
-        if not wd.find_element_by_xpath("//div[@id='content']/form/select[2]//option[4]").is_selected():
-            wd.find_element_by_xpath("//div[@id='content']/form/select[2]//option[4]").click()
+        select = Select(wd.find_element_by_name('bday'))
+        select.select_by_value(contact.bday)
+        select2 = Select(wd.find_element_by_name('bmonth'))
+        select2.select_by_value(contact.bmonth)
         wd.find_element_by_name("byear").click()
         wd.find_element_by_name("byear").clear()
-        wd.find_element_by_name("byear").send_keys(contact.bithday_year)
-        if not wd.find_element_by_xpath("//div[@id='content']/form/select[3]//option[18]").is_selected():
-            wd.find_element_by_xpath("//div[@id='content']/form/select[3]//option[18]").click()
-        if not wd.find_element_by_xpath("//div[@id='content']/form/select[4]//option[8]").is_selected():
-            wd.find_element_by_xpath("//div[@id='content']/form/select[4]//option[8]").click()
+        wd.find_element_by_name("byear").send_keys(contact.byear)
+        select = Select(wd.find_element_by_name('aday'))
+        select.select_by_value(contact.aday)
+        select = Select(wd.find_element_by_name('amonth'))
+        select.select_by_value(contact.amonth)
         wd.find_element_by_name("ayear").click()
         wd.find_element_by_name("ayear").clear()
-        wd.find_element_by_name("ayear").send_keys(contact.anniversary_year)
+        wd.find_element_by_name("ayear").send_keys(contact.byear)
         wd.find_element_by_name("address2").click()
         wd.find_element_by_name("address2").clear()
         wd.find_element_by_name("address2").send_keys(contact.address_secondary)
@@ -106,14 +106,14 @@ class test_add_contact(unittest.TestCase):
 
     def logout(self, wd):
         wd.find_element_by_link_text("Logout").click()
-        wd.find_element_by_name("user").click()
-        wd.find_element_by_name("user").send_keys("\\undefined")
+##        wd.find_element_by_name("user").click()
+##        wd.find_element_by_name("user").send_keys("\\undefined")
 
     def test_add_contact(self):
         wd = self.wd
         self.open_home_page(wd)
         self.login(wd, user="admin", password="secret")
-        self.create_contact(wd, Contact("as", "as", "as", "as", "as", "as", "as", "as", "as", "as", "as", "as", "as", "as", "2000",
+        self.create_contact(wd, Contact("my name", "my middlename ", "my lastname", "my nickname", "my title", "my company", "my adress", "my telephone", "my home", "my mobile", "my work", "my fax", "my email2", "my email3", "1", "February", "2000", "3", "February",
                             "2012", "qwqw", "qwqw", "qwqw"))
         self.return_to_main_page(wd)
         self.logout(wd)
