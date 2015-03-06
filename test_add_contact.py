@@ -20,6 +20,9 @@ class test_add_contact(unittest.TestCase):
         wd.get("http://localhost/addressbook/")
 
     def login(self, wd, user, password):
+        ## Открываем страницу авторизации
+        self.open_home_page(wd)
+        ## Выполняем авторизацию
         wd.find_element_by_name("user").click()
         wd.find_element_by_name("user").clear()
         wd.find_element_by_name("user").send_keys(user)
@@ -100,6 +103,8 @@ class test_add_contact(unittest.TestCase):
         wd.find_element_by_name("notes").send_keys(contact.notes)
         ##Submin contact creation
         wd.find_element_by_xpath("//div[@id='content']/form/input[21]").click()
+        ## Возвращаемся на главную страницу после создания контакта
+        self.return_to_main_page(wd)
 
     def return_to_main_page(self, wd):
         wd.find_element_by_link_text("home page").click()
@@ -111,11 +116,9 @@ class test_add_contact(unittest.TestCase):
 
     def test_add_contact(self):
         wd = self.wd
-        self.open_home_page(wd)
         self.login(wd, user="admin", password="secret")
         self.create_contact(wd, Contact("my name", "my middlename ", "my lastname", "my nickname", "my title", "my company", "my adress", "my telephone", "my home", "my mobile", "my work", "my fax", "my email2", "my email3", "1", "February", "2000", "3", "February",
                             "2012", "qwqw", "qwqw", "qwqw"))
-        self.return_to_main_page(wd)
         self.logout(wd)
 
     def tearDown(self):
