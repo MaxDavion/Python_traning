@@ -1,4 +1,5 @@
 from selenium.webdriver.support.select import Select
+import selenium.webdriver.support.wait
 
 class ContactHelper:
 
@@ -84,17 +85,28 @@ class ContactHelper:
         ## Return to main page  after contact creation
         self.return_to_main_page()
 
-    def delete(self):
+    def delete_from_main_page(self):
         wd = self.app.wd
-##        wd.find_element_by_name("selected[]").click()
-##        wd.find_element_by_xpath("//*[@id='content']/form[2]/div[2]/input").click()
-        wd.find_element_by_xpath("//div/div[4]/form[2]/table/tbody/tr[2]/td[8]/a/img").click()
+        wd.find_element_by_name("selected[]").click()
+        wd.find_element_by_xpath("//*[@id='content']/form[2]/div[2]/input").click()
+        wd.switch_to_alert().accept()
+
+    def click_edit_contact(self):
+        wd = self.app.wd
+        wd.find_element_by_xpath("//*[@id='maintable']/tbody/tr[2]/td[8]/a/img").click()
+
+    def delete_from_contact_form(self):
+        wd = self.app.wd
+        ## Click on Edit contact button
+        self.click_edit_contact()
+        ## Click delete button
         wd.find_element_by_xpath("//*[@id='content']/form[2]/input[2]").click()
+
 
     def edit(self, contact):
         wd = self.app.wd
-        ## Click on Edit
-        wd.find_element_by_xpath("//*[@id='maintable']/tbody/tr[2]/td[8]/a/img").click()
+        ## Click on Edit contact button
+        self.click_edit_contact(wd)
         ## Fill contact form
         self.fill_contact_form(contact)
         ##Submin contact edit
