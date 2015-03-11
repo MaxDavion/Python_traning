@@ -5,15 +5,11 @@ class ContactHelper:
     def __init__(self, app):
         self.app = app
 
-    def create(self, contact):
+    def fill_contact_form(self, contact):
         wd = self.app.wd
-        ## Init contact creation
-        wd.find_element_by_link_text("add new").click()
-        ## Fill contact creation form
         wd.find_element_by_name("firstname").click()
         wd.find_element_by_name("firstname").clear()
         wd.find_element_by_name("firstname").send_keys(contact.firstname)
-        wd.find_element_by_name("theform").click()
         wd.find_element_by_name("middlename").click()
         wd.find_element_by_name("middlename").clear()
         wd.find_element_by_name("middlename").send_keys(contact.middlename)
@@ -66,7 +62,7 @@ class ContactHelper:
         select.select_by_value(contact.amonth)
         wd.find_element_by_name("ayear").click()
         wd.find_element_by_name("ayear").clear()
-        wd.find_element_by_name("ayear").send_keys(contact.byear)
+        wd.find_element_by_name("ayear").send_keys(contact.ayear)
         wd.find_element_by_name("address2").click()
         wd.find_element_by_name("address2").clear()
         wd.find_element_by_name("address2").send_keys(contact.address_secondary)
@@ -76,6 +72,13 @@ class ContactHelper:
         wd.find_element_by_name("notes").click()
         wd.find_element_by_name("notes").clear()
         wd.find_element_by_name("notes").send_keys(contact.notes)
+
+    def create(self, contact):
+        wd = self.app.wd
+        ## Init contact creation
+        wd.find_element_by_link_text("add new").click()
+        ## Fill contact form
+        self.fill_contact_form(contact)
         ##Submin contact creation
         wd.find_element_by_xpath("//div[@id='content']/form/input[21]").click()
         ## Return to main page  after contact creation
@@ -87,6 +90,18 @@ class ContactHelper:
 ##        wd.find_element_by_xpath("//*[@id='content']/form[2]/div[2]/input").click()
         wd.find_element_by_xpath("//div/div[4]/form[2]/table/tbody/tr[2]/td[8]/a/img").click()
         wd.find_element_by_xpath("//*[@id='content']/form[2]/input[2]").click()
+
+    def edit(self, contact):
+        wd = self.app.wd
+        ## Click on Edit
+        wd.find_element_by_xpath("//*[@id='maintable']/tbody/tr[2]/td[8]/a/img").click()
+        ## Fill contact form
+        self.fill_contact_form(contact)
+        ##Submin contact edit
+        wd.find_element_by_xpath("//*[@id='content']/form[1]/input[22]").click()
+        ## Return to main page  after contact creation
+        self.return_to_main_page()
+
 
 
     def return_to_main_page(self):
