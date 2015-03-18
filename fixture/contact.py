@@ -86,10 +86,11 @@ class ContactHelper:
         ## Return to main page  after contact creation
         self.return_to_main_page()
 
-
-
     def return_to_main_page(self):
         wd = self.app.wd
         wd.find_element_by_link_text("home page").click()
 
+    def count(self):
+        wd = self.app.wd
+        return len(wd.find_elements_by_name("selected[]"))
 
