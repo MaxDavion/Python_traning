@@ -29,15 +29,11 @@ class SessionHelper:
     def ensure_login(self, user, password):
         wd = self.app.wd
         if self.is_logged_in():
-            if is_logged_in_as(user):
+            if self.is_logged_in_as(user):
                 return
             else:
                 self.logout()
         self.login(user, password)
-
-
-
-
 
 
     def logout(self):

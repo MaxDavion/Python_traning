@@ -1,4 +1,4 @@
 
 
 def test_delite_group(app):
-    app.group.delete_from_main_page()
+    app.group.delete()
