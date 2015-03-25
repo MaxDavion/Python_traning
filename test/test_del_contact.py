@@ -2,7 +2,7 @@
 from model.contact import Contact
 
 ## Precondition
-def create_contact_if_contact_list_empty(app):
+def create_contact_if_contact_list_empty(app): #Создаем контакт, если нечего удалять
     if app.contact.count() == 0:
         app.contact.create(Contact(firstname="contact for delete"))
 
@@ -10,8 +10,16 @@ def create_contact_if_contact_list_empty(app):
 ## Tests
 def test_delite_contact_from_main_page(app):
     create_contact_if_contact_list_empty(app)
-    app.contact.delete_from_main_page()
+    old_contacts = app.contact.get_contact_list() #получаем список контактов на странице до выполнения действия
+    app.contact.delete_from_main_page() #выполняем удаление первого контакта на странице
+    new_contacts = app.contact.get_contact_list() #получаем список контактов на странице после выполнения действия
+    assert len(old_contacts) - 1  == len(new_contacts) #Проверяем что кол-во контактов на странице уменьшилось на 1
 
+
+
+
+'''
 def test_delite_contact_from_contact_form(app):
     create_contact_if_contact_list_empty(app)
     app.contact.delete_from_contact_form()
+'''

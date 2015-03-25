@@ -2,7 +2,7 @@
 
 class Contact:
 
-    def __init__(self, firstname=None, middlename=None, lastname=None, nickname=None, title=None, company=None, address=None, home=None, mobile=None, work=None, fax=None, email2=None, email3=None, homepage=None, bday=None, bmonth=None, byear=None, aday=None, amonth=None, ayear=None, address_secondary=None, phone_secondary=None, notes=None):
+    def __init__(self, firstname=None, middlename=None, lastname=None, nickname=None, title=None, company=None, address=None, home=None, mobile=None, work=None, fax=None, email2=None, email3=None, homepage=None, bday=None, bmonth=None, byear=None, aday=None, amonth=None, ayear=None, address_secondary=None, phone_secondary=None, notes=None, id=None):
         self.firstname = firstname
         self.middlename = middlename
         self.lastname = lastname
@@ -26,3 +26,7 @@ class Contact:
         self.address_secondary = address_secondary
         self.phone_secondary = phone_secondary
         self.notes = notes
+        self.id = id
+
+    def __repr__(self):
+        return '%s:%s' % (self.id, self.lastname)
