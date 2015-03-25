@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from sys import maxsize
+
 class Group:
 
     def __init__(self, name=None, header=None, footer=None, id=None):
@@ -14,7 +16,14 @@ class Group:
 
     ##Перегрузка функции сравнения, для сравнения списка групп
     def __eq__(self, other):
-        return self.name == other.name and self.id == other.id
+        return self.name == other.name and (self.id is None or other.id is None or self.id == other.id)
+
+    ## Метод, возвращающий  id группы если он есть или большое число, если у группы еще нет idю Используется как ключ в проверке списков групп
+    def id_or_max(self):
+        if self.id:
+            return int(self.id)
+        else:
+            return maxsize
 
 
 

@@ -11,13 +11,18 @@ def create_group_if_group_list_empty(app):
 ##Tests
 def test_edit_group(app):
     create_group_if_group_list_empty(app)
+    group = Group(name="newgroupname", header="newgroupheader", footer="newgroupfooter")
     old_group = app.group.get_group_list()
-    app.group.edit(Group(name="newgroupname", header="newgroupheader", footer="newgroupfooter"))
+    group.id = old_group[0].id
+    app.group.edit(group)
     new_group = app.group.get_group_list()
     ## Проверить, что после редактирования кол-во групп не изменилось
     assert len(old_group) == len(new_group)
+    old_group[0] = group
+    assert sorted(old_group, key=Group.id_or_max) == sorted(new_group, key=Group.id_or_max)
 
 
+'''
 def test_edit_group_name(app):
     create_group_if_group_list_empty(app)
     old_group = app.group.get_group_list()
@@ -38,5 +43,5 @@ def test_edit_group_footer(app):
     app.group.edit(Group(footer="new footer"))
     new_group = app.group.get_group_list()
     assert len(old_group) == len(new_group)
-
+'''
 
