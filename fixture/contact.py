@@ -98,14 +98,10 @@ class ContactHelper:
         wd = self.app.wd
         return len(wd.find_elements_by_name("selected[]"))
 
-    def go_to_home_page(self):
-        wd = self.app.wd
-        wd.find_element_by_link_text("home").click()
-
     # Метод,для получения списка контактов с главной страницы
     def get_contact_list(self):
         wd = self.app.wd
-        self.go_to_home_page()
+        self.app.go_to_home_page()
         contacts = []
         for element in wd.find_elements_by_css_selector("tr[name=entry]"):
             id = element.find_element_by_name("selected[]").get_attribute("value")
