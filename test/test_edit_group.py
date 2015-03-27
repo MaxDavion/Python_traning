@@ -9,7 +9,7 @@ def create_group_if_group_list_empty(app):  # Предусловие првое�
 
 
 ##Tests
-def test_edit_group(app):
+def test_edit_random_group(app):
     create_group_if_group_list_empty(app)  # Проверяем, есть ли на странице групп - группы, которые можно изменить, если их нет, то создаем группу
     group = Group(name="newgroupname", header="newgroupheader", footer="newgroupfooter")
     old_group = app.group.get_group_list()  # Оракул. Получаем список групп со страницы, до выполнения действия

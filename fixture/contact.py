@@ -62,29 +62,35 @@ class ContactHelper:
         self.return_to_main_page()
         self.conact_cache = None  # очишаем кеш со списком групп на странице групп
 
-    def delete_from_main_page(self):
+    def delete_first_from_main_page(self):
+        self.delete_by_index_from_main_page(0)
+
+    def delete_by_index_from_main_page(self, index):
         wd = self.app.wd
-        wd.find_element_by_name("selected[]").click()
+        wd.find_elements_by_name("selected[]")[index].click()
         wd.find_element_by_xpath("//*[@id='content']/form[2]/div[2]/input").click()
         wd.switch_to_alert().accept()
         self.conact_cache = None  # очишаем кеш со списком групп на странице групп
 
-    def click_edit_contact(self):
+    def click_edit_contact(self, index):
         wd = self.app.wd
-        wd.find_element_by_xpath("//*[@id='maintable']/tbody/tr[2]/td[8]/a/img").click()
+        wd.find_elements_by_xpath("//*[@id='maintable']/tbody/tr/td[8]/a/img")[index].click()
 
-    def delete_from_contact_form(self):
+    def delete_by_index_from_contact_form(self, index):
         wd = self.app.wd
         ## Click on Edit contact button
-        self.click_edit_contact()
+        self.click_edit_contact(index)
         ## Click delete button
         wd.find_element_by_xpath("//*[@id='content']/form[2]/input[2]").click()
         self.conact_cache = None  # очишаем кеш со списком групп на странице групп
 
-    def edit(self, new_contact_data):
+    def edit_first_contact(self, new_contact_data):
+        self.edit_by_index(new_contact_data, 0)
+
+    def edit_by_index(self, new_contact_data, index):
         wd = self.app.wd
         ## Click on Edit contact button
-        self.click_edit_contact()
+        self.click_edit_contact(index)
         ## Fill contact form
         self.fill_contact_form(new_contact_data)
         ##Submin contact edit

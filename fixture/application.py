@@ -17,7 +17,7 @@ class Application:
 
     def open_home_page(self):
         wd = self.wd
-        wd.get("http://localhost/addressbook/")
+        wd.get("http://skyrim/addressbook/")
 
     def go_to_home_page(self):
         wd = self.wd
