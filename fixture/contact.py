@@ -60,12 +60,14 @@ class ContactHelper:
         wd.find_element_by_xpath("//div[@id='content']/form/input[21]").click()
         ## Return to main page  after contact creation
         self.return_to_main_page()
+        self.conact_cache = None  # очишаем кеш со списком групп на странице групп
 
     def delete_from_main_page(self):
         wd = self.app.wd
         wd.find_element_by_name("selected[]").click()
         wd.find_element_by_xpath("//*[@id='content']/form[2]/div[2]/input").click()
         wd.switch_to_alert().accept()
+        self.conact_cache = None  # очишаем кеш со списком групп на странице групп
 
     def click_edit_contact(self):
         wd = self.app.wd
@@ -77,7 +79,7 @@ class ContactHelper:
         self.click_edit_contact()
         ## Click delete button
         wd.find_element_by_xpath("//*[@id='content']/form[2]/input[2]").click()
-
+        self.conact_cache = None  # очишаем кеш со списком групп на странице групп
 
     def edit(self, new_contact_data):
         wd = self.app.wd
@@ -89,25 +91,31 @@ class ContactHelper:
         wd.find_element_by_xpath("//*[@id='content']/form[1]/input[22]").click()
         ## Return to main page  after contact creation
         self.return_to_main_page()
+        self.conact_cache = None  # очишаем кеш со списком групп на странице групп
 
     def return_to_main_page(self):
         wd = self.app.wd
         wd.find_element_by_link_text("home page").click()
 
+    # Метод возвращает кол-во контактов с главной страницы
     def count(self):
         wd = self.app.wd
+        self.app.go_to_home_page()
         return len(wd.find_elements_by_name("selected[]"))
 
-    # Метод,для получения списка контактов с главной страницы
+    conact_cache = None  # Переменная для хранения кеша контактов на странице групп
+
+    # Метод,для получения списка контактов (id, lastname, fierstname) с главной страницы
     def get_contact_list(self):
-        wd = self.app.wd
-        self.app.go_to_home_page()
-        contacts = []
-        for element in wd.find_elements_by_css_selector("tr[name=entry]"):
-            id = element.find_element_by_name("selected[]").get_attribute("value")
-            lastname = element.find_element_by_css_selector("td:nth-child(2)").text
-            firstname = element.find_element_by_css_selector("td:nth-child(3)").text
-            contacts.append(Contact(id=id, lastname=lastname, firstname=firstname))
-        return contacts
+        if self.conact_cache is None:
+            wd = self.app.wd
+            self.app.go_to_home_page()  # Переходим на главную страницу
+            self.conact_cache = []  # Создаем пустой список, для включения в него найденных на странице контактов
+            for element in wd.find_elements_by_css_selector("tr[name=entry]"):  # Для каждого контакта с главной страницы берем id, lastname и firstname и помещаем в список
+                id = element.find_element_by_name("selected[]").get_attribute("value")
+                lastname = element.find_element_by_css_selector("td:nth-child(2)").text
+                firstname = element.find_element_by_css_selector("td:nth-child(3)").text
+                self.conact_cache.append(Contact(id=id, lastname=lastname, firstname=firstname))
+        return list(self.conact_cache)  # Возвращаем копию полученного списка групп
 
 
