@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from sys import maxsize
 
 class Contact:
 
@@ -32,4 +33,11 @@ class Contact:
         return '%s:%s' % (self.id, self.lastname)
 
     def __eq__(self, other):
-        return self.id == other.id and self.lastname == other.lastname
+        return (self.id == other.id or self.id is None or other.id is None) and self.lastname == other.lastname
+
+    # Метод, возвращающий  id группы если он есть или большое число, если у группы еще нет idю Используется как ключ в проверке списков групп
+    def id_or_max(self):
+        if self.id:
+            return int(self.id)
+        else:
+            return maxsize

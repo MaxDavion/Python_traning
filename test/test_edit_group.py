@@ -14,9 +14,8 @@ def test_edit_group(app):
     group = Group(name="newgroupname", header="newgroupheader", footer="newgroupfooter")
     old_group = app.group.get_group_list()
     group.id = old_group[0].id
-    app.group.edit(group)
-    new_group = app.group.get_group_list()
-    ## Проверить, что после редактирования кол-во групп не изменилось
+    app.group.edit(group)  # Выполняем действие редактирования группы
+    new_group = app.group.get_group_list()  # Проверить, что после редактирования кол-во групп не изменилось
     assert len(old_group) == len(new_group)
     old_group[0] = group
     assert sorted(old_group, key=Group.id_or_max) == sorted(new_group, key=Group.id_or_max)

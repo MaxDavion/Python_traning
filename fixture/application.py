@@ -17,13 +17,11 @@ class Application:
 
     def open_home_page(self):
         wd = self.wd
-        if not wd.current_url(u"http://localhost/addressbook/"):
-            wd.get("http://localhost/addressbook/")
+        wd.get("http://localhost/addressbook/")
 
     def go_to_home_page(self):
         wd = self.wd
-        if not wd.current_url.endswith(""):
-            wd.find_element_by_link_text("home").click()
+        wd.find_element_by_link_text("home").click()
 
     def destroy(self):
         self.wd.quit()

@@ -11,9 +11,19 @@ def create_contact_if_contact_list_empty(app):
 ## Tests
 def test_edit_contact(app):
     create_contact_if_contact_list_empty(app)
-    app.contact.edit(Contact("new name", "new middlename", "new lastname", "new nickname", "new title", "new company", "new adress", "new telephone", "new home", "new mobile", "new work", "new fax", "new email2", "new email3", "5", "February", "2009", "7", "February",
-                            "2011", "new", "new", "new"))
+    old_contacts = app.contact.get_contact_list()
+    contact = Contact("new name", "new middlename", "new lastname", "new nickname", "new title", "new company", "new adress", "new telephone", "new home", "new mobile", "new work", "new fax", "new email2", "new email3", "5", "February", "2009", "7", "February",
+                            "2011", "new", "new", "new")
+    contact.id = old_contacts[0].id
+    app.contact.edit(contact)
+    new_contacts = app.contact.get_contact_list()
+    assert len(old_contacts) == len(new_contacts)
+    old_contacts[0] = contact
+    assert sorted(old_contacts, key=Contact.id_or_max) == sorted(new_contacts, key=Contact.id_or_max)
 
+
+'''
 def test_edit_contact_name_section(app):
     create_contact_if_contact_list_empty(app)
     app.contact.edit(Contact(firstname="new firstname", middlename="new middlename", lastname="new lastname"))
+'''
