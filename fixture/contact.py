@@ -103,7 +103,7 @@ class ContactHelper:
         self.app.go_to_home_page()
         return len(wd.find_elements_by_name("selected[]"))
 
-    conact_cache = None  # Переменная для хранения кеша контактов на странице групп
+    conact_cache = None  # Переменная для хранения кеша контактов на главной странице
 
     # Метод,для получения списка контактов (id, lastname, fierstname) с главной страницы
     def get_contact_list(self):

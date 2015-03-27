@@ -38,28 +38,35 @@ class GroupHelper:
         self.return_to_groups_page()
         self.group_cache = None  # очишаем кеш со списком групп на странице групп
 
-    def check_group_on_group_page(self):
+    # Метод отмечает группу на странице группы, в качестве параметра передается index группы в переменной, group_cache
+    def check_group_on_group_page(self, index):
         wd = self.app.wd
-        wd.find_element_by_name("selected[]").click()
+        wd.find_elements_by_name("selected[]")[index].click()
 
-    def delete(self):
+    def delete_first_group(self):
+        self.delete_by_index(0)
+
+    def delete_by_index(self, index):
         wd = self.app.wd
         ## Open group page
         self.open_groups_page()
         ## Find group on group_page
-        self.check_group_on_group_page()
+        self.check_group_on_group_page(index)
         ## Delete group
         wd.find_element_by_name("delete").click()
         ## Return to mainpage after group creation
         self.return_to_groups_page()
         self.group_cache = None  # очишаем кеш со списком групп на странице групп
 
-    def edit(self, new_group_data):
+    def edit_first_group(self, new_group_data):
+        self.delete_by_index(new_group_data, 0)
+
+    def edit_by_index(self, new_group_data, index):
         wd = self.app.wd
         ## Open group page
         self.open_groups_page()
         ## Find group on group_page
-        self.check_group_on_group_page()
+        self.check_group_on_group_page(index)
         ## Edit group
         wd.find_element_by_name("edit").click()
         # Fill group create form
@@ -80,7 +87,7 @@ class GroupHelper:
         self.open_groups_page()
         return len(wd.find_elements_by_name("selected[]"))
 
-    group_cache = None  # Переменная для хранения кеша групп на странице групп
+    group_cache = None  # Переменная для хранения списка групп на странице групп
 
     # Метод, для получения списка групп (id, name) со страницы групп
     def get_group_list(self):
