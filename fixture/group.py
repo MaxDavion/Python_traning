@@ -36,6 +36,7 @@ class GroupHelper:
         wd.find_element_by_name("submit").click()
         ## Return to mainpage after group creation
         self.return_to_groups_page()
+        self.group_cache = None  # очишаем кеш со списком групп на странице групп
 
     def check_group_on_group_page(self):
         wd = self.app.wd
@@ -51,6 +52,7 @@ class GroupHelper:
         wd.find_element_by_name("delete").click()
         ## Return to mainpage after group creation
         self.return_to_groups_page()
+        self.group_cache = None  # очишаем кеш со списком групп на странице групп
 
     def edit(self, new_group_data):
         wd = self.app.wd
@@ -66,24 +68,28 @@ class GroupHelper:
         wd.find_element_by_name("update").click()
         ## Return to mainpage after group creation
         self.return_to_groups_page()
-
+        self.group_cache = None  # очишаем кеш со списком групп на странице групп
 
     def return_to_groups_page(self):
         wd = self.app.wd
         wd.find_element_by_link_text("group page").click()
 
+    # Метод возвращает кол-во групп со страницы групп
     def count(self):
         wd = self.app.wd
         self.open_groups_page()
         return len(wd.find_elements_by_name("selected[]"))
 
-    # Метод, для получения списка групп со страницы групп
+    group_cache = None  # Переменная для хранения кеша групп на странице групп
+
+    # Метод, для получения списка групп (id, name) со страницы групп
     def get_group_list(self):
-        wd = self.app.wd
-        self.open_groups_page()
-        groups = []
-        for element in wd.find_elements_by_css_selector("span.group"):
-            text = element.text
-            id = element.find_element_by_name("selected[]").get_attribute("value")
-            groups.append(Group(name=text, id=id))
-        return groups
+        if self.group_cache is None:
+            wd = self.app.wd
+            self.open_groups_page()  # Переходим на страницу групп
+            self.group_cache = []  # Создаем пустой список, для включения в него найденных на странице групп
+            for element in wd.find_elements_by_css_selector("span.group"):  # Для каждой группы со страницы берем id и name и помещаем в список
+               text = element.text
+               id = element.find_element_by_name("selected[]").get_attribute("value")
+               self.group_cache.append(Group(name=text, id=id))
+        return list(self.group_cache)  # возвращаем копию полученного списка групп
