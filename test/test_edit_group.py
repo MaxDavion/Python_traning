@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from model.group import Group
-from random import  randrange
+from random import randrange
 
 ## Precondition
 def create_group_if_group_list_empty(app):  # Предусловие првоеряет наличие хотя бы одной группы, которую можно редакировать. Если такой группы нет, то создаем.

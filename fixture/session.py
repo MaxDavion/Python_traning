@@ -16,15 +16,20 @@ class SessionHelper:
         wd.find_element_by_name("pass").click()
         wd.find_element_by_name("pass").clear()
         wd.find_element_by_name("pass").send_keys(password)
-        wd.find_element_by_css_selector("input[type=\"submit\"]").click()
+        wd.find_element_by_css_selector('input[type="submit"]').click()
 
     def is_logged_in(self):
         wd = self.app.wd
         return len(wd.find_elements_by_link_text("Logout")) > 0
 
+    def get_logged_user(self):
+        wd = self.app.wd
+        return wd.find_element_by_xpath("//*[@id='top']/form/b").text[1:-1]
+
     def is_logged_in_as(self, user):
         wd = self.app.wd
-        return wd.find_element_by_xpath("//*[@id='top']/form/b").text == "(" + user + ")"
+        return self.get_logged_user() == user
+
 
     def ensure_login(self, user, password):
         wd = self.app.wd
