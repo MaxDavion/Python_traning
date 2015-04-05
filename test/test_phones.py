@@ -30,12 +30,11 @@ def test_all_contact_data_from_home_page_equal_contact_data_from_edit_page(app):
     contact_from_home_page = app.contact.get_contact_list()[index]  # Получае данные с главной страницы по выбранному контакту
     app.contact.open_contact_to_edit_by_index(index)  # Открываем на редактирование выбранный контакт
     contact_from_edit_page = app.contact.get_contact_details_from_edit_page()  # Получаем данные со страницы редактирования выбранного контакта
-    assert contact_from_home_page.lastname == contact_from_edit_page.lastname # Здесь и ниже сравниваем данные
+    assert contact_from_home_page.lastname == contact_from_edit_page.lastname  # Здесь и ниже сравниваем данные
     assert contact_from_home_page.firstname == contact_from_edit_page.firstname
     assert contact_from_home_page.address == contact_from_edit_page.address
     assert contact_from_home_page.all_phones_from_home_page == merge_phones(contact_from_edit_page)
     assert contact_from_home_page.all_emails_from_home_page == merge_emails(contact_from_edit_page)
-
 
 
 '''

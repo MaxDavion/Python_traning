@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from sys import maxsize
 
+
 class Contact:
 
     def __init__(self, firstname=None, middlename=None, lastname=None, nickname=None,title=None,
@@ -37,7 +38,7 @@ class Contact:
         self.all_emails_from_home_page = all_emails_from_home_page
 
     def __repr__(self):
-        return '%s:%s:%s' % (self.id, self.lastname, self.firstname)
+        return '%s:%s:%s:%s:%s:%s:%s' % (self.id, self.lastname, self.firstname, self.address, self.mobile, self.email2, self.bmonth)
 
     def __eq__(self, other):
         return (self.id == other.id or self.id is None or other.id is None) and self.lastname == other.lastname and self.firstname == other.firstname
@@ -48,3 +49,4 @@ class Contact:
             return int(self.id)
         else:
             return maxsize
+

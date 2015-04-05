@@ -12,7 +12,7 @@ class Group:
 
     # Изменяем  вид вывода объекта на консоль
     def __repr__(self):
-        return '%s:%s' % (self.id, self.name)
+        return '%s:%s:%s:%s' % (self.id, self.name, self.header, self.footer)
 
     # Перегрузка функции сравнения, для сравнения списка групп
     def __eq__(self, other):

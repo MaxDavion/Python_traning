@@ -41,6 +41,7 @@ class ContactHelper:
         self.change_field_value("mobile", contact.mobile)
         self.change_field_value("work", contact.work)
         self.change_field_value("fax", contact.fax)
+        self.change_field_value("email", contact.email)
         self.change_field_value("email2", contact.email2)
         self.change_field_value("email3", contact.email3)
         self.change_field_value("homepage", contact.homepage)
@@ -58,10 +59,11 @@ class ContactHelper:
 
 # Методы относящиеся к выполнению действий с контактом
 
+# Создание группы
     def create(self, contact):
         wd = self.app.wd
         ## Init contact creation
-        wd.find_element_by_link_text("add new").click()
+        self.open_add_contact_page(wd)
         ## Fill contact form
         self.fill_contact_form(contact)
         ##Submin contact creation
@@ -121,6 +123,10 @@ class ContactHelper:
         wd = self.app.wd
         wd.find_element_by_link_text("home page").click()
 
+    def open_add_contact_page(self, wd):
+        if not wd.current_url.endswith("/edit.php"):
+            wd.find_element_by_link_text("add new").click()
+
 # -------------------------------------------------------------
 
 # Прочие вспомогательные методы сбора информации:
@@ -178,3 +184,11 @@ class ContactHelper:
         work = re.search('W: (.*)',all_contact_details).group(1)
         phone_secondary = re.search('P: (.*)', all_contact_details).group(1)
         return Contact(home=home, mobile=mobile, work=work, phone_secondary=phone_secondary)
+
+    # Метод,для получения списков месяцев со страницы создания\редактирования контакта
+    def get_month_from_create_page(self):
+        wd = self.app.wd
+        self.open_add_contact_page()
+        month = wd.find_element_by_xpath("//*[@id='content']/form/select[2]").text
+        return month.split("\n")
+
