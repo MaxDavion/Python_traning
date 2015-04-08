@@ -1,5 +1,5 @@
 {
-  "baseUrl": "http://skyrim/addressbook/",
+  "baseUrl": "http://localhost/addressbook/",
   "user": "admin",
   "password": "secret"
 }
