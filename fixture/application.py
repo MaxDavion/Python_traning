@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from selenium import webdriver
-from session import SessionHelper
-from group import GroupHelper
-from contact import ContactHelper
+from .session import SessionHelper
+from .group import GroupHelper
+from .contact import ContactHelper
 
 
 class Application:
