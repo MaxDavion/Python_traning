@@ -90,7 +90,14 @@ class ContactHelper:
         wd.find_elements_by_name("selected[]")[index].click()
         wd.find_element_by_xpath("//*[@id='content']/form[2]/div[2]/input").click()
         wd.switch_to_alert().accept()
-        self.conact_cache = None  # очишаем кеш со списком групп на странице групп
+        self.contact_cache = None  # очишаем кеш со списком групп на странице групп
+
+    def delete_by_id_from_main_page(self, id):
+        wd = self.app.wd
+        wd.find_element_by_css_selector("input[value='%s']" % id).click()
+        wd.find_element_by_xpath("//*[@id='content']/form[2]/div[2]/input").click()
+        wd.switch_to_alert().accept()
+        self.contact_cache = None  # очишаем кеш со списком групп на странице групп
 
     def delete_by_index_from_contact_form(self, index):
         wd = self.app.wd

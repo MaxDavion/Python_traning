@@ -1,15 +1,16 @@
 # -*- coding: utf-8 -*-
 from model.group import Group
-from random import randrange
+import random
 
 
-def test_delete_random_group(app):
-    if app.group.count() == 0:  # Проверяем, есть ли на странице групп - группы, которые можно удалить, если их нет, то создаем группу
+def test_delete_random_group(app, db, check_ui):
+    if len(db.get_group_list()) == 0:  # Проверяем, есть ли на странице групп - группы, которые можно удалить, если их нет, то создаем группу
         app.group.create(Group(name="group for delete"))
-    old_groups = app.group.get_group_list()  # Оракул. Получаем список групп со страницы, до выполнения действия
-    index = randrange(len(old_groups))  # выбираем произвольный index группы из списка групп собранных со страницы.
-    app.group.delete_by_index(index)  # Выполняем действие удаления группы
-    assert len(old_groups) - 1 == app.group.count()  # Проверяем, что после выполнения действия кол-во групп на странице уменьшилось на 1
-    new_groups = app.group.get_group_list()  # Получаем список групп со страницы, после выполнения действия
-    old_groups[index:index+1] = []  # Оракул. Удаляем из оракула удаленную через интерфейс группу
-    assert old_groups == new_groups  # Проверить, что удаленная группа отсутствует на странице, а остальные группы присутствуют
+    old_groups = db.get_group_list()  # Оракул. Получаем список групп, до выполнения действия
+    group = random.choice(old_groups)
+    app.group.delete_by_id(group.id)  # Выполняем действие удаления группы
+    new_groups = db.get_group_list()  # Получаем список групп, после выполнения действия
+    old_groups.remove(group)  # Оракул. Удаляем из оракула удаленную через интерфейс группу
+    assert old_groups == new_groups
+    if check_ui:
+        assert sorted(new_groups, key=lambda group: int(group.id)) == sorted(app.group.get_group_list(), key=lambda group: int(group.id))
