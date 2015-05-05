@@ -1,18 +1,14 @@
 import mysql.connector
-from model.group import Group
+from fixture.orm import ORMFixture
 
-# connection = mysql.connector.Connect(host="192.168.0.100", port='3306', database="addressbook", user="root", password="")
-connection = mysql.connector.Connect(host="localhost", port='3306', database="addressbook", user="root", password="")
+db = ORMFixture(host="localhost", name="addressbook", user="root", password="")
 
 try:
-    cursor = connection.cursor()
-    list = []
-    cursor.execute("select id from addressbook where deprecated = '0000-00-00 00:00:00'")
-    for row in cursor:
-        (id) = row
-        list.append(Group(id=id))
-    print(list)
+    l = db.get_contact_list()
+    for item in l:
+        print(item)
+    print(len(l))
 finally:
-    connection.close
+    pass
 
 

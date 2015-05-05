@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import mysql.connector
 from model.group import Group
 from model.contact import Contact
