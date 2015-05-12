@@ -13,7 +13,5 @@ def test_delete_random_group(app, db, check_ui):
     new_groups = db.get_group_list()  # Получаем список групп, после выполнения действия
     old_groups.remove(group)  # Оракул. Удаляем из оракула удаленную через интерфейс группу
     assert old_groups == new_groups
-'''
     if check_ui:
-        assert sorted(new_groups, key=Group.id_or_max) == sorted(app.group.get_group_list(), key=Group.id_or_max)
-'''
+        assert sorted(new_groups, key=Group.id_or_max) == sorted(db.get_group_list(), key=Group.id_or_max)

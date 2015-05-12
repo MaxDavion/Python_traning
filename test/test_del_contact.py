@@ -9,24 +9,27 @@ def create_contact_if_contact_list_empty(app, db):  # Предусловие п�
 
 
 # Tests
-def test_delete_random_contact_from_main_page(app, db):
-    # create_contact_if_contact_list_empty(app, db)  # Проверяем, есть ли на главной странице - контакты, которые можно удалить, если их нет, то создаем контакт
+def test_delete_random_contact_from_main_page(app, db, check_ui):
+    create_contact_if_contact_list_empty(app, db)  # Проверяем, есть ли на главной странице - контакты, которые можно удалить, если их нет, то создаем контакт
     old_contacts = db.get_contact_list()  # Оракул. получаем список контактов до выполнения действия
     contact = random.choice(old_contacts)
     app.contact.delete_by_id_from_main_page(contact.id)  # выполняем действие удаления контакта
+    app.go_to_home_page()
     new_contacts = db.get_contact_list()  # Получаем список контактов со страницы, после выполнения действия
     old_contacts.remove(contact)  # Оракул. Удаляем из оракула удаленный через интерфейс контакт
     assert old_contacts == new_contacts
+    if check_ui:
+        assert sorted(new_contacts, key=Contact.id_or_max) == sorted(db.get_contact_list(), key=Contact.id_or_max)
 
 
-'''
-def test_delete_random_contact_from_contact_form(app):
-    create_contact_if_contact_list_empty(app)
-    old_contacts = app.contact.get_contact_list()
-    index = randrange(len(old_contacts))
-    app.contact.delete_by_index_from_contact_form(index)
-    assert len(old_contacts) - 1 == app.contact.count()
-    new_contacts = app.contact.get_contact_list()
-    old_contacts[index:index+1] = []
-    assert sorted(old_contacts, key=lambda contact: int(contact.id)) == sorted(new_contacts, key=lambda contact: int(contact.id))
-'''
+def test_delete_random_contact_from_contact_form(app, db, check_ui):
+    create_contact_if_contact_list_empty(app, db)
+    old_contacts = db.get_contact_list()
+    contact = random.choice(old_contacts)
+    app.contact.delete_by_id_from_contact_form(contact.id)
+    app.go_to_home_page()
+    new_contacts = db.get_contact_list()
+    old_contacts.remove(contact)
+    assert old_contacts == new_contacts
+    if check_ui:
+        assert sorted(new_contacts, key=Contact.id_or_max) == sorted(db.get_contact_list(), key=Contact.id_or_max)

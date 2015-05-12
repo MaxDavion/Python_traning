@@ -93,6 +93,22 @@ class GroupHelper:
         self.return_to_groups_page()
         self.group_cache = None  # очишаем кеш со списком групп на странице групп
 
+    def edit_by_id(self, new_group_data, id):
+        wd = self.app.wd
+        ## Open group page
+        self.open_groups_page()
+        ## Find group on group_page
+        self.check_group_on_group_page_by_id(id)
+        ## Edit group
+        wd.find_element_by_name("edit").click()
+        # Fill group create form
+        self.fill_group_form(new_group_data)
+        #Submin group update
+        wd.find_element_by_name("update").click()
+        ## Return to mainpage after group creation
+        self.return_to_groups_page()
+        self.group_cache = None  # очишаем кеш со списком групп на странице групп
+
     def return_to_groups_page(self):
         wd = self.app.wd
         wd.find_element_by_link_text("group page").click()

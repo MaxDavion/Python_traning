@@ -59,7 +59,7 @@ class ContactHelper:
 
 # Методы относящиеся к выполнению действий с контактом
 
-# Создание группы
+# Создание контакта
     def create(self, contact):
         wd = self.app.wd
         ## Init contact creation
@@ -76,6 +76,11 @@ class ContactHelper:
         wd = self.app.wd
         self.app.go_to_home_page()
         wd.find_elements_by_xpath("//*[@id='maintable']/tbody/tr/td[8]/a/img")[index].click()
+
+    def open_contact_to_edit_by_id(self, id):
+        wd = self.app.wd
+        self.app.go_to_home_page()
+        wd.find_element_by_css_selector("[href='edit.php?id=%s']" % id).click()
 
     def open_contact_to_view_by_index(self, index):
         wd = self.app.wd
@@ -107,6 +112,14 @@ class ContactHelper:
         wd.find_element_by_xpath("//*[@id='content']/form[2]/input[2]").click()
         self.conact_cache = None  # очишаем кеш со списком групп на странице групп
 
+    def delete_by_id_from_contact_form(self, id):
+        wd = self.app.wd
+        ## Click on Edit contact button
+        self.open_contact_to_edit_by_id(id)
+        ## Click delete button
+        wd.find_element_by_xpath("//*[@id='content']/form[2]/input[2]").click()
+        self.conact_cache = None  # очишаем кеш со списком групп на странице групп
+
     def edit_first_contact(self, new_contact_data):
         self.edit_by_index(new_contact_data, 0)
 
@@ -114,6 +127,18 @@ class ContactHelper:
         wd = self.app.wd
         ## Click on Edit contact button
         self.open_contact_to_edit_by_index(index)
+        ## Fill contact form
+        self.fill_contact_form(new_contact_data)
+        ##Submin contact edit
+        wd.find_element_by_xpath("//*[@id='content']/form[1]/input[22]").click()
+        ## Return to main page  after contact creation
+        self.return_to_main_page()
+        self.conact_cache = None  # очишаем кеш со списком групп на странице групп
+
+    def edit_by_id(self, new_contact_data, id):
+        wd = self.app.wd
+        ## Click on Edit contact button
+        self.open_contact_to_edit_by_id(id)
         ## Fill contact form
         self.fill_contact_form(new_contact_data)
         ##Submin contact edit
