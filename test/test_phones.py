@@ -24,6 +24,7 @@ def merge_emails(contact):
 
 #ТЕСТЫ
 
+
 #  Для случайно выбранного контакта информация на главной странице соответствует информации, представленной в форме редактирования контакта
 def test_all_contact_data_from_home_page_equal_contact_data_from_edit_page(app):
     index = randrange(app.contact.count())  # выбираем произвольный index контакта из списка контактов собранных со страницы.
@@ -35,6 +36,22 @@ def test_all_contact_data_from_home_page_equal_contact_data_from_edit_page(app):
     assert contact_from_home_page.address == contact_from_edit_page.address
     assert contact_from_home_page.all_phones_from_home_page == merge_phones(contact_from_edit_page)
     assert contact_from_home_page.all_emails_from_home_page == merge_emails(contact_from_edit_page)
+
+#  Для всех контактов с главной страницы  информация на главной странице соответствует информации, из базы данных
+def test_all_contact_data_from_home_page__equal_contact_data_db(app, db):
+    contacts_from_home_page = app.contact.get_contact_list()
+    contact_data_from_db = db.get_contact_list()
+    assert len(contacts_from_home_page) == len(contact_data_from_db)
+    contacts_from_home_page.sort(key=Contact.id_or_max)
+    contact_data_from_db.sort(key=Contact.id_or_max)
+    def compare_contacts_list(contacts_from_home_page, contact_data_from_db):
+        assert contacts_from_home_page.lastname == contact_data_from_db.lastname
+        assert contacts_from_home_page.firstname == contact_data_from_db.firstname
+        assert contacts_from_home_page.address == contact_data_from_db.address
+        assert contacts_from_home_page.all_phones_from_home_page == merge_phones(contact_data_from_db)
+        assert contacts_from_home_page.all_emails_from_home_page == merge_emails(contact_data_from_db)
+    map(compare_contacts_list, contacts_from_home_page, contact_data_from_db)
+
 
 
 '''

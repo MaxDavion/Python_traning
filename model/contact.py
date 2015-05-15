@@ -38,10 +38,10 @@ class Contact:
         self.all_emails_from_home_page = all_emails_from_home_page
 
     def __repr__(self):
-        return '%s:%s:%s:%s:%s:%s' % (self.id, self.lastname, self.firstname, self.address, self.all_phones_from_home_page, self.all_emails_from_home_page)
+        return '%s:%s:%s' % (self.id, self.lastname, self.firstname)
 
     def __eq__(self, other):
-        return (self.id == other.id or self.id is None or other.id is None) and self.lastname == other.lastname and self.firstname == other.firstname and self.address == other.address and self.all_phones_from_home_page == other.all_phones_from_home_page and self.all_emails_from_home_page == other.all_emails_from_home_page
+        return (self.id == other.id or self.id is None or other.id is None) and self.lastname == other.lastname and self.firstname == other.firstname
 
     # Метод, возвращающий  id группы если он есть или большое число, если у группы еще нет idю Используется как ключ в проверке списков групп
     def id_or_max(self):
