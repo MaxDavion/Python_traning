@@ -7,7 +7,7 @@ def create_group_if_group_list_empty(app, db):  # Предусловие прв�
     if len(db.get_group_list()) == 0:
         app.group.create(Group(name="groupname", header="groupheader", footer="groupfooter"))
 
-
+'''
 ##Tests
 def test_edit_random_group(app, db, check_ui):
     create_group_if_group_list_empty(app, db)  # Проверяем, есть ли на странице групп - группы, которые можно изменить, если их нет, то создаем группу
@@ -22,7 +22,7 @@ def test_edit_random_group(app, db, check_ui):
     assert old_groups == new_groups
     if check_ui:
         assert sorted(new_groups, key=Group.id_or_max) == sorted(db.get_group_list(), key=Group.id_or_max)
-
+'''
 
 '''
 def test_edit_group_name(app):
@@ -38,6 +38,7 @@ def test_edit_group_header(app):
     app.group.edit(Group(header="new header"))
     new_group = app.group.get_group_list()
     assert len(old_group) == len(new_group)
+'''
 
 def test_edit_group_footer(app):
     create_group_if_group_list_empty(app)
@@ -45,5 +46,5 @@ def test_edit_group_footer(app):
     app.group.edit(Group(footer="new footer"))
     new_group = app.group.get_group_list()
     assert len(old_group) == len(new_group)
-'''
+
 
