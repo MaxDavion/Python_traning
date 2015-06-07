@@ -7,11 +7,11 @@ import pytest
 # data_groups - берем данные из data\groups.py
 def test_create_empty_group(app, db, json_groups):
     group = json_groups
-    with pytest.allure.step('step1'):
+    with pytest.allure.step('Добавим новую группу'):
         old_groups = db.get_group_list()
-    with pytest.allure.step('step2'):
+    with pytest.allure.step('Шаг 2'):
         app.group.create(group)
-    with pytest.allure.step('step3'):
+    with pytest.allure.step('Шаг 3'):
         new_groups = db.get_group_list()
         old_groups.append(group)
         assert sorted(old_groups, key=Group.id_or_max) == sorted(new_groups, key=Group.id_or_max)
