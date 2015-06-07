@@ -9,7 +9,7 @@ def test_create_group(app, db, json_groups):
     group = json_groups
     with pytest.allure.step('Запоминаем список групп на странице'):
         old_groups = db.get_group_list()
-    with pytest.allure.step('Добавляем новую группу %s' % group):
+    with pytest.allure.step('Добавляем новую группу'):
         app.group.create(group)
     with pytest.allure.step('Проверяем что новая группа добавлена'):
         new_groups = db.get_group_list()
