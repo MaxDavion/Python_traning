@@ -4,15 +4,16 @@ from model.group import Group
 import random
 import pytest
 
-@pytest.allure.step('Given a group list')
 @given('a group list')
 def group_list(db):
-    return db.get_group_list()
+    with pytest.allure.step('Given a group list'):
+        return db.get_group_list()
 
-@pytest.allure.step('Given a group with name={name}, header={header}, footer={footer}')
+
 @given('a group with <name>, <header>, <footer>')
 def new_group(name, header, footer):
-    return Group(name=name, header=header, footer=footer)
+    with pytest.allure.step('Given a group with name={name}, header={header} and footer={footer}'):
+        return Group(name=name, header=header, footer=footer)
 
 @when('I add the group to the list')
 def add_new_group(app, new_group):
@@ -27,17 +28,19 @@ def verify_group_added(db, group_list, new_group):
         old_groups.append(new_group)
         assert sorted(old_groups, key=Group.id_or_max) == sorted(new_groups, key=Group.id_or_max)
 
-@pytest.allure.step('Given a non-empty group list')
+
 @given('a non-empty group list')
 def non_empty_group_list(db, app):
-    if len(db.get_group_list()) == 0:
-        app.group.create(Group(name="group for delete"))
-    return db.get_group_list()
+    with pytest.allure.step('Given a non-empty group list'):
+        if len(db.get_group_list()) == 0:
+            app.group.create(Group(name="group for delete"))
+        return db.get_group_list()
 
-@pytest.allure.step('Given a random group from the list')
+pytest.allure.step('Given a random group from the list')
 @given('a random group from the list')
 def random_group(non_empty_group_list):
-    return random.choice(non_empty_group_list)
+    with pytest.allure.step('Given a random group from the list'):
+        return random.choice(non_empty_group_list)
 
 @when('I delete the group from the list')
 def delete_group(app, random_group):
