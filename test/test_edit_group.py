@@ -1,27 +1,32 @@
 # -*- coding: utf-8 -*-
 from model.group import Group
 import random
+import pytest
 
 ## Precondition
 def create_group_if_group_list_empty(app, db):  # Предусловие првоеряет наличие хотя бы одной группы, которую можно редакировать. Если такой группы нет, то создаем.
-    if len(db.get_group_list()) == 0:
-        app.group.create(Group(name="groupname", header="groupheader", footer="groupfooter"))
+    with pytest.allure.step('Проверяем, есть ли на странице групп - группы, которые можно изменить, если их нет, то создаем группу'):
+        if len(db.get_group_list()) == 0:
+            app.group.create(Group(name="groupname", header="groupheader", footer="groupfooter"))
 
 
 ##Tests
 def test_edit_random_group(app, db, check_ui):
-    create_group_if_group_list_empty(app, db)  # Проверяем, есть ли на странице групп - группы, которые можно изменить, если их нет, то создаем группу
+    create_group_if_group_list_empty(app, db)
     new_group_data = Group(name="newgroupname", header="newgroupheader", footer="newgroupfooter")
-    old_groups = db.get_group_list()
-    group = random.choice(old_groups)
-    index = old_groups.index(group)
-    new_group_data.id = old_groups[index].id
-    app.group.edit_by_id(new_group_data, group.id)  # Выполняем действие редактирования группы
-    new_groups = db.get_group_list()
-    old_groups[index] = new_group_data  # Оракул. Изменяем в оракуле данные отредактированной через интерфейс группы
-    assert old_groups == new_groups
-    if check_ui:
-        assert sorted(new_groups, key=Group.id_or_max) == sorted(db.get_group_list(), key=Group.id_or_max)
+    with pytest.allure.step('Получаем список групп, до выполнения действия'):
+        old_groups = db.get_group_list()
+    with pytest.allure.step('Выбираем случайную группу и изменяем ее'):
+        group = random.choice(old_groups)
+        index = old_groups.index(group)
+        new_group_data.id = old_groups[index].id
+        app.group.edit_by_id(new_group_data, group.id)  # Выполняем действие редактирования группы
+    with pytest.allure.step("Проверяем что группа изменилась"):
+        new_groups = db.get_group_list()
+        old_groups[index] = new_group_data  # Оракул. Изменяем в оракуле данные отредактированной через интерфейс группы
+        assert old_groups == new_groups
+        if check_ui:
+            assert sorted(new_groups, key=Group.id_or_max) == sorted(db.get_group_list(), key=Group.id_or_max)
 
 
 '''
