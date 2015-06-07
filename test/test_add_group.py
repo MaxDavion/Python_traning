@@ -1,16 +1,20 @@
 # -*- coding: utf-8 -*-
 from model.group import Group
+import pytest
 
 # ТЕСТ
 # json_groups - берем данные из data\group.json
 # data_groups - берем данные из data\groups.py
 def test_create_empty_group(app, db, json_groups):
     group = json_groups
-    old_groups = db.get_group_list()
-    app.group.create(group)
-    new_groups = db.get_group_list()
-    old_groups.append(group)
-    assert sorted(old_groups, key=Group.id_or_max) == sorted(new_groups, key=Group.id_or_max)
+    with pytest.allure.step('step1'):
+        old_groups = db.get_group_list()
+    with pytest.allure.step('step2'):
+        app.group.create(group)
+    with pytest.allure.step('step3'):
+        new_groups = db.get_group_list()
+        old_groups.append(group)
+        assert sorted(old_groups, key=Group.id_or_max) == sorted(new_groups, key=Group.id_or_max)
 
 
 # BACKUP
