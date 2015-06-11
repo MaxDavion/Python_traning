@@ -6,7 +6,8 @@ import allure
 # ТЕСТ
 # json_groups - берем данные из data\group.json
 # data_groups - берем данные из data\groups.py
-@pytest.allure.title("This is our cool test suite")
+@allure.feature('Feature1')
+@allure.story('Story1')
 def test_create_group(app, db, json_groups):
     group = json_groups
     with pytest.allure.step('Запоминаем список групп на странице'):
