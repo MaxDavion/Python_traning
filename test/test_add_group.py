@@ -5,6 +5,7 @@ import pytest
 # ТЕСТ
 # json_groups - берем данные из data\group.json
 # data_groups - берем данные из data\groups.py
+@pytest.allure.testcase('http://my.tms.org/TESTCASE-1')
 def test_create_group(app, db, json_groups):
     group = json_groups
     with pytest.allure.step('Запоминаем список групп на странице'):
