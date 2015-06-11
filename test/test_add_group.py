@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 from model.group import Group
 import pytest
+import allure
 
 # ТЕСТ
 # json_groups - берем данные из data\group.json
 # data_groups - берем данные из data\groups.py
-@pytest.allure.testcase('http://my.tms.org/TESTCASE-1')
+@pytest.allure.title("This is our cool test suite")
 def test_create_group(app, db, json_groups):
     group = json_groups
     with pytest.allure.step('Запоминаем список групп на странице'):
